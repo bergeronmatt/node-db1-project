@@ -56,6 +56,21 @@ router.post('/', (req, res) =>{
     })
 })
 
+//UPDATE - will be attempting the PATCH route handler instead of the standard PUT 
+router.patch('/:id', (req, res) => {
+    const changes = req.body; //set up variable to store the changes to the account information
+    const {id} = req.params; //set up an id object to store and handle the parameters of the information being changed
+    db('accounts') //access the accounts database in accounts.js
+        .where({id}) //stipulation clause searching for the id of the object being updated
+        .update(changes) //update function to pass the changes variable
+        .then(count => { //setting up an if/else statement to parse through data to find the specific id of the account being updated
+            if (count > 0){
+                res.status(200).json({mesage: 'success'})
+            } else {
+                res.status(404).json({message: 'could not find the account'})
+            }
+        })
+})
 
 
 module.exports = router;
