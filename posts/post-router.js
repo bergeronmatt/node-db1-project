@@ -70,7 +70,28 @@ router.patch('/:id', (req, res) => {
                 res.status(404).json({message: 'could not find the account'})
             }
         })
+        .catch(err => { //catch statment with error message in the event it cannot be saved to the database
+            res.status(500).json({error: err.message})
+        })
 })
 
+
+//DELETE
+
+router.delete('/:id', (req, res) => {
+    db('accounts')//access the accounts database
+        .where({id : req.params.id}) //find the specific account by its id
+        .del() //delete the selected account
+        .then(count => {
+            if (count > 0){
+                res.status(200).json({mesage: 'account successfully deleted'})
+            } else {
+                res.status(404).json({message: 'could not find the account'})
+            }
+        })
+        .catch(err => { //catch statment with error message in the event it cannot be saved to the database
+            res.status(500).json({error: err.message})
+        })
+})
 
 module.exports = router;
