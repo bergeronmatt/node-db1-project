@@ -8,6 +8,7 @@ server.use(express.json());
 
 server.use("/api/posts", PostRouter);
 
+//sanity test
 server.get("/", (req, res) => {
     res.status(200).json({api: "up"});
 });

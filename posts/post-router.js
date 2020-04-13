@@ -36,6 +36,26 @@ router.get('/:id', (req, res) => {
         })
 })
 
+// CREATE
+
+router.post('/', (req, res) =>{
+    const accountData = req.body //set up a variable to handle the data that's being pushed to the database
+    db('accounts') //access the database
+    .insert(accountData, 'id')//insert the data being presented and assign it an id
+    .then(ids => { //then statement to being generating the id for the account posted
+        const id = ids[0]; //setting up an id variable and then searching for a place in the array for it
+        db('accounts') //accessing the accounts database again
+            .where({id}) //checking the next available id in the chain
+            .first()
+            .then(account => { //render the account to the browser with success message
+                res.status(201).json({data: account})
+            });
+    })
+    .catch(err => { //catch statment with error message in the event it cannot be saved to the database
+        res.status(500).json({error: err.message})
+    })
+})
+
 
 
 module.exports = router;
